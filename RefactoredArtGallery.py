@@ -5,7 +5,6 @@
 import tkinter as tk
 #import triangulate as tri
 
-
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -21,9 +20,9 @@ class Vector:
         print(f"<{self.x}, {self.y}>")
 
 #finds cross product between two vertices
-def crossProduct(vec1, vec2):
+def crossProduct(ver1, ver2):
     #print(vec1.x * vec2.y - vec1.y * vec2.x )
-    return vec1.x * vec2.y - vec1.y * vec2.x    
+    return ver1.x * ver2.y - ver1.y * ver2.x    
 
 #returns the area of the polygon. If area is positive, we have a clickwise winding order. If negative, counterclockwise. 
 def polygonArea(points):
@@ -38,7 +37,6 @@ def polygonArea(points):
         area += width * height
     return area
 
-
 #takes an index of any size, returns proper index in relative position 
 def getCircularIndex(list, index):
     if index >= len(list):
@@ -50,6 +48,12 @@ def getCircularIndex(list, index):
 
 #vector math to find out if a point(p) is within a triangle(a, b, c)
 def isPointInsideTriangle(p, a, b, c):
+
+    if polygonArea([a, b, c]) < 0:
+        temp = b
+        b = c
+        c = temp
+
     ab = Vector(b.x - a.x, b.y - a.y)
     bc = Vector(c.x - b.x, c.y - b.y)
     ca = Vector(a.x - c.x, a.y - c.y)
@@ -66,6 +70,47 @@ def isPointInsideTriangle(p, a, b, c):
         return False
     
     return True
+
+#returns the index of an array which holds the smallest value
+def returnIndexSmallestInt(arr):
+    smallestIndex = 0
+    for i in range(1, len(arr)):
+        if arr[i] <= arr[i-1]:
+            smallestIndex = i 
+    return smallestIndex
+
+#if number is odd, return true
+def isOdd(number):
+    if number % 2 == 1:
+        return True
+    else:
+        return False
+
+#takes in array of triangles
+#returns a list with each index corresponding to a color
+def colorVerticies(triangles):
+    
+    indexColors = []
+    #colors can be 1, 2, or 3. 
+    degreeList = []
+    for i in range(len(triangles)+2):
+        degreeList.append(0)
+        indexColors.append(0)
+    
+    for i in range(len(triangles)):
+        for j in range(len(triangles[i])):
+            degreeList[triangles[i][j]] += 1
+    
+    indexColors[0] = 1
+    indexColors[1] = 2
+    for i in range(1, len(indexColors)-1):
+        
+        if not isOdd(degreeList[i]):
+            indexColors[i+1] = indexColors[i-1]
+        else:
+            indexColors[i+1] = 6 - indexColors[i-1] - indexColors[i]
+    
+    return indexColors
 
 # Takes in a list of vertices (their index in the list represents their order in the polygon) 
 # returns a list of triangles made from those indices
@@ -133,41 +178,6 @@ def triangulatePolygon(vertices):
     triangleList.append(triangle)
 
     return triangleList
-
-#if number is odd, return true
-def isOdd(number):
-    if number % 2 == 1:
-        return True
-    else:
-        return False
-
-#takes in array of triangles
-#returns a list with each index corresponding to a color
-def colorVerticies(triangles):
-    
-    indexColors = []
-    #colors can be 1, 2, or 3. 
-    degreeList = []
-    for i in range(len(triangles)+2):
-        degreeList.append(0)
-        indexColors.append(0)
-    
-    for i in range(len(triangles)):
-        for j in range(len(triangles[i])):
-            degreeList[triangles[i][j]] += 1
-    
-    indexColors[0] = 1
-    indexColors[1] = 2
-    for i in range(1, len(indexColors)-1):
-        
-        if not isOdd(degreeList[i]):
-            indexColors[i+1] = indexColors[i-1]
-        else:
-            indexColors[i+1] = 6 - indexColors[i-1] - indexColors[i]
-    
-    return indexColors
-
-
 
 #clears the canvas and variables
 def refresh_event():
@@ -237,15 +247,7 @@ def guard_event():
                 color = 'yellow'
             #If the color matches the least used color in the colorization step, then display it. Otherwise dont.
             if indexColors[i] == guardColor:
-                canvas.create_oval(pointList[i].x+5, pointList[i].y+5, pointList[i].x-5, pointList[i].y-5, fill = color, outline="black")
-    
-#returns the index of an array which holds the smallest value
-def returnIndexSmallestInt(arr):
-    smallestIndex = 0
-    for i in range(1, len(arr)):
-        if arr[i] <= arr[i-1]:
-            smallestIndex = i 
-    return smallestIndex
+                canvas.create_oval(pointList[i].x+5, pointList[i].y+5, pointList[i].x-5, pointList[i].y-5, fill = color, outline="black")    
 
 
 #displays the polygon and its triangulations
@@ -262,7 +264,7 @@ def triangulate_event():
         for i in range(len(triangleList)):
             canvas.create_line(pointList[triangleList[i][0]].x, pointList[triangleList[i][0]].y, pointList[triangleList[i][2]].x, pointList[triangleList[i][2]].y, fill = "red")
     
-
+#Draws a line on the screen.
 def draw_line(e):
     global originPoint
     x, y = e.x, e.y
@@ -277,7 +279,8 @@ def draw_line(e):
             canvas.create_oval(pointList[i].x+2, pointList[i].y+2, pointList[i].x-2, pointList[i].y-2, fill = "black", outline="black")
             canvas.create_line(pointList[i].x, pointList[i].y, pointList[i+1].x, pointList[i+1].y, fill = "black")
         if len(pointList) > 2:
-                canvas.create_line(x, y, originPoint.x, originPoint.y, width=1, fill = "lightgrey")
+            canvas.create_line(x, y, originPoint.x, originPoint.y, width=1, fill = "lightgrey")
+
 
 # Create an instance of tkinter
 win = tk.Tk()
@@ -309,5 +312,8 @@ refresh_btn.pack(side = "left")
 btn.pack()
 canvas.pack()
 
+def main():
+    win.mainloop()
 
-win.mainloop()
+if __name__ == "__main__":
+    main()

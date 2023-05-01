@@ -10,9 +10,12 @@ class TestArtGalleryMethods(unittest.TestCase):
         self.polygon = [Point(0, 0), Point(5, 0), Point(5, 5), Point(0, 5)]
         self.triangleList = triangulatePolygon(self.polygon)
 
+    #UNIT TESTS
     def test_crossProduct(self):
         self.assertEqual(crossProduct(self.vertex1, self.vertex2), -2)
 
+
+     #Integration tests with the Point() class and polygonArea().
     def test_polygonArea(self):
 
         posWinding = [Point(0,0), Point(0,1), Point(1,1), Point(1,0)]
@@ -27,6 +30,7 @@ class TestArtGalleryMethods(unittest.TestCase):
         self.assertEqual(getCircularIndex(listLength3, -1), 2)
         self.assertEqual(getCircularIndex(listLength3, 5), 2)
 
+    #Integration tests with the Point() class and isPointInsideTriangle.
     def test_isPointInsideTriangle(self):
         triPointA = Point(0, 0)
         triPointB = Point(0, 4)
@@ -48,6 +52,7 @@ class TestArtGalleryMethods(unittest.TestCase):
     def test_colorVerticies(self):
         self.assertEqual(colorVerticies(self.triangleList), [1, 2, 1, 3])
 
+    #Integration test with the Point() class and triangulatePolygon.
     def test_triangulatePolygon(self):
         posWindingOrderPolygon = [Point(0, 0), Point(0, 5), Point(5, 5), Point(5, 0)]
         negWindingOrderPolygon = [Point(0, 0), Point(5, 0), Point(5, 5), Point(0, 5)]
@@ -56,6 +61,9 @@ class TestArtGalleryMethods(unittest.TestCase):
         self.assertEqual(triangulatePolygon(incompletePolygon), 1)
         self.assertEqual(triangulatePolygon(posWindingOrderPolygon), [[3, 0, 1], [1, 2, 3]])
         self.assertEqual(triangulatePolygon(negWindingOrderPolygon), [[3, 0, 1], [1, 2, 3]])
+
+
+
 
 
 

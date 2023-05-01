@@ -9,19 +9,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Docker login
-        uses: docker/login-action@v1
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}   
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
-        run: |
-          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: docker build
-        run: docker build -t artgallery .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-      - name: docker push
-        run: docker push artgallery
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: artgallery:latest
 
 
           

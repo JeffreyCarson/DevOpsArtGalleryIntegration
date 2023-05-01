@@ -211,7 +211,7 @@ def color_event():
             if indexColors[i] == 2:
                 color = 'blue'
             if indexColors[i] == 3:
-                color = 'green'
+                color = 'yellow'
             canvas.create_oval(pointList[i].x+5, pointList[i].y+5, pointList[i].x-5, pointList[i].y-5, fill = color, outline="black")
     
     

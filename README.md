@@ -7,6 +7,42 @@ Instructor: Erin Keith
 Final Project
 
 
+# Build and Test infastructure
+
+To automatically build and test, I am using a GitHub action to automate running my tests when I push to main.
+
+
+# Build and Deploy Infastructure
+
+To automatically build and deploy, I have a separate GitHub Action to automate building a docker image and pushing it to GitHub Packages. When I push to main.
+
+
+# To Run Docker Image (On MacOS)
+
+Note: Although it is possible, I do not recommend trying to run this image, as it is a Tkinter GUI. On MacOS it is very difficult to set this up [see below]. I have no idea how this would be done on another OS.
+
+(Need: XQuartz, socat) [If on mac, idek what you would do on windows.]
+
+    - make sure XQuarts is closed and not running (First enable "Allow connections from network clients" in the security tab in XQuartz.)
+
+    - run socat (in a separate terminal)
+
+        socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\"
+
+    - open XQuartz
+
+        open -a XQuartz
+
+    - Pull Docker image from github
+
+        docker pull ghcr.io/jeffreycarson/devopsartgalleryintegration:main
+
+    - Containerize
+
+        docker run -d -e DISPLAY=<your ip>:0 ghcr.io/jeffreycarson/devopsartgalleryintegration:main
+
+# Final Project Design Document
+
 Project’s existing functionality and technologies used
 
 The software application I will be using for the final project is a personal project that I completed in the summer of 2022. The technologies that I used include Python and Tkinter. My project visualizes the art gallery problem through interactive software. The art gallery problem is a well-studied visibility problem in computational geometry. The premise is given a 2D polygon, where should you place guards that would theoretically have “vision” of the entire gallery? A mathematical definition is given below.

@@ -211,7 +211,7 @@ def color_event():
             if indexColors[i] == 2:
                 color = 'blue'
             if indexColors[i] == 3:
-                color = 'green'
+                color = 'yellow'
             canvas.create_oval(pointList[i].x+5, pointList[i].y+5, pointList[i].x-5, pointList[i].y-5, fill = color, outline="black")
     
     
@@ -244,7 +244,7 @@ def guard_event():
             if indexColors[i] == 2:
                 color = 'blue'
             if indexColors[i] == 3:
-                color = 'green'
+                color = 'yellow'
             #If the color matches the least used color in the colorization step, then display it. Otherwise dont.
             if indexColors[i] == guardColor:
                 canvas.create_oval(pointList[i].x+5, pointList[i].y+5, pointList[i].x-5, pointList[i].y-5, fill = color, outline="black")    

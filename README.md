@@ -14,7 +14,7 @@ To automatically build and test, I am using a GitHub action to automate running 
 
 # Build and Deploy Infastructure
 
-To automatically build and deploy, I have a separate GitHub Action to automate building a docker image and pushing it to GitHub Packages. When I push to main.
+To automatically build and deploy, I have a separate GitHub Action to automate building a docker image and pushing it to GitHub Packages. This also happens when I push to main.
 
 
 # To Run Docker Image (On MacOS)
